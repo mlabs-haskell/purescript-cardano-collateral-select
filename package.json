@@ -1,0 +1,20 @@
+{
+    "name": "purescript-cardano-collateral-select",
+    "type": "module",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/mlabs-haskell/purescript-cardano-collateral-select.git"
+    },
+    "scripts": {
+        "test": "spago test"
+    },
+    "dependencies": {
+        "@mlabs-haskell/json-bigint": "^2.0.0",
+        "@mlabs-haskell/cardano-serialization-lib-gc": "^1.0.10",
+        "@mlabs-haskell/uplc-apply-args": "^2.0.1"
+    },
+    "prettier": {
+        "arrowParens": "avoid",
+        "trailingComma": "none"
+    }
+}
