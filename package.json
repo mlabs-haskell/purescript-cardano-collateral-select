@@ -9,9 +9,7 @@
         "test": "spago test"
     },
     "dependencies": {
-        "@mlabs-haskell/json-bigint": "^2.0.0",
-        "@mlabs-haskell/cardano-serialization-lib-gc": "^1.0.10",
-        "@mlabs-haskell/uplc-apply-args": "^2.0.1"
+        "@mlabs-haskell/json-bigint": "^2.0.0"
     },
     "prettier": {
         "arrowParens": "avoid",
