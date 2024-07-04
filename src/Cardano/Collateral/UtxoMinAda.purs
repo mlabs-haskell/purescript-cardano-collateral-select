@@ -5,7 +5,6 @@ module Cardano.Collateral.UtxoMinAda
 
 import Prelude
 
-import Cardano.Types.BigNum (BigNum)
 import Cardano.Types.BigNum (maxValue) as BigNum
 import Cardano.Types.Coin (Coin)
 import Cardano.Types.TransactionOutput (TransactionOutput, minAdaForOutput)
@@ -14,11 +13,11 @@ import Cardano.Collateral.FakeOutput (fakeOutputWithValue)
 import Data.Newtype (unwrap)
 
 utxoMinAdaValue
-  :: Coin -> TransactionOutput -> BigNum
+  :: Coin -> TransactionOutput -> Coin
 utxoMinAdaValue coinsPerUtxoByte txOutput =
-  unwrap $ minAdaForOutput txOutput (unwrap coinsPerUtxoByte)
+  minAdaForOutput txOutput (unwrap coinsPerUtxoByte)
 
-adaOnlyUtxoMinAdaValue :: Coin -> BigNum
+adaOnlyUtxoMinAdaValue :: Coin -> Coin
 adaOnlyUtxoMinAdaValue coinsPerUtxoByte =
   utxoMinAdaValue coinsPerUtxoByte <<<
     fakeOutputWithValue

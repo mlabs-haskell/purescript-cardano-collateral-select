@@ -7,7 +7,6 @@ import Prelude
 
 import Cardano.Collateral.FakeOutput (fakeOutputWithMultiAssets)
 import Cardano.Collateral.UtxoMinAda (utxoMinAdaValue)
-import Cardano.Types.BigNum (BigNum)
 import Cardano.Types.Coin (Coin)
 import Cardano.Types.Coin as Coin
 import Cardano.Types.MultiAsset (MultiAsset)
@@ -44,15 +43,15 @@ maxCandidateUtxos = 10
 --------------------------------------------------------------------------------
 
 collateralReturnMinAdaValue
-  :: Coin -> List TransactionUnspentOutput -> Maybe BigNum
+  :: Coin -> List TransactionUnspentOutput -> Maybe Coin
 collateralReturnMinAdaValue coinsPerUtxoByte =
   pure <<< utxoMinAdaValue coinsPerUtxoByte <<< fakeOutputWithMultiAssets <=<
     MultiAsset.sum <<< Array.fromFoldable <<< map nonAdaAsset
 
-type ReturnOutMinAdaValue = BigNum
+type MinAdaValue = Coin
 
 newtype CollateralCandidate =
-  CollateralCandidate (List TransactionUnspentOutput /\ ReturnOutMinAdaValue)
+  CollateralCandidate (List TransactionUnspentOutput /\ MinAdaValue)
 
 derive instance Newtype CollateralCandidate _
 
@@ -74,7 +73,7 @@ instance Ord CollateralCandidate where
     caseEq EQ ordering = ordering
     caseEq ordering _ = ordering
 
-    byReturnOutMinAda :: CollateralCandidate -> ReturnOutMinAdaValue
+    byReturnOutMinAda :: CollateralCandidate -> MinAdaValue
     byReturnOutMinAda = Tuple.snd <<< unwrap
 
     byNumOfInputs :: CollateralCandidate -> Int
@@ -84,7 +83,7 @@ instance Ord CollateralCandidate where
     byAdaValue = foldl consumeUtxoAdaValue Coin.zero <<< Tuple.fst <<< unwrap
 
 mkCollateralCandidate
-  :: List TransactionUnspentOutput /\ Maybe ReturnOutMinAdaValue
+  :: List TransactionUnspentOutput /\ Maybe MinAdaValue
   -> Maybe CollateralCandidate
 mkCollateralCandidate (unspentOutputs /\ returnOutMinAdaValue) =
   CollateralCandidate <<< Tuple unspentOutputs <$> returnOutMinAdaValue
@@ -181,7 +180,7 @@ combinations k =
 
 bugTrackerLink :: String
 bugTrackerLink =
-  "https://github.com/Plutonomicon/cardano-transaction-lib/issues"
+  "https://github.com/mlabs-haskell/purescript-cardano-collateral-select/issues"
 
 unsafeFromJust :: forall a. String -> Maybe a -> a
 unsafeFromJust e a = case a of
